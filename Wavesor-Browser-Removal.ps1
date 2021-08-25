@@ -3,6 +3,14 @@ echo "_________________________"
 echo "Uninstalling Wave Browser"
 echo "_________________________"
 
+<# $UninstallWaveBrowser = (Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\| Get-ItemProperty | Where {$_.DisplayName 
+-like "WaveBrowser"}).UninstallString.Replace("MsiExec.exe /I","") #>
+
+<# if ($UninstallWaveBrowser) {
+    $UninstallArg = '/x '+$UninstallWaveBrowser+' /qn /norestart'
+    Start-Process -FilePath msiexec.exe -ArgumentList $UninstallArg -wait
+} #>
+
 $BadApp = Get-WmiObject -Class Win32_Product | Where-Object{$_.Name -eq "WaveBrowser"}
 
 $BadApp.Uninstall
