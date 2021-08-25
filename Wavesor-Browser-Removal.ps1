@@ -59,7 +59,7 @@ echo "______________________"
 
 <#
 New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS | out-null 
-Get-ChildItem -Path c:\users | ? Name -notMatch 'Public|Administrator|' | ForEach {
+Get-ChildItem -Path c:\Users | ? Name -notMatch 'Public|Administrator' | ForEach {
     $TempName    = $_.Name
     $TempHive    = Join-Path HKU $_.Name
     $ProfilePath = Join-Path $_.FullName NTUSER.DAT
