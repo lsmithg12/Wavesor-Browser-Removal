@@ -57,6 +57,18 @@ echo "______________________"
 echo "Deleting registry keys"
 echo "______________________"
 
+<#
+New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS | out-null 
+Get-ChildItem -Path c:\users | ? Name -notMatch 'Public|Administrator|' | ForEach {
+    $TempName    = $_.Name
+    $TempHive    = Join-Path HKU $_.Name
+    $ProfilePath = Join-Path $_.FullName NTUSER.DAT
+    reg load       $TempHive $ProfilePath
+    Remove-Item    "HKU:\$TempName\SOFTWARE\WaveBrowser" -Recurse -Force -Verbose
+    reg unload     $TempHive
+}
+#>
+
 Remove-Item "HKCU:\Software\WaveBrowser" -Force -Recurse -Verbose
 
 Remove-Item "HKCU:\Software\Wavesor" -Force -Recurse -Verbose
